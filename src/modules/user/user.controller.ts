@@ -7,14 +7,14 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post('/register')
   async create(@Body() createUserDto: CreateUserDto) {
-    try{
+    try {
       const user = await this.userService.register(createUserDto);
       return successResponse(user, "User registration successful");
-    }catch(err){
+    } catch (err) {
       throw new HttpException(
         errorResponse(
           'User registration failed',
@@ -27,10 +27,9 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  async getProfile(@Req() req){
-    console.log("Req User",req.user);
-
-    const profile = await this.userService.findByUsername(req.user.username);
+  async getProfile(@Req() req) {
+    console.log(req.user);
+    const profile = await this.userService.findByEmail(req.user.email);
     return successResponse(profile, "User profile retrieved successfully");
   }
 

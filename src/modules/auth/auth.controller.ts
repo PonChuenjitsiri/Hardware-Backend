@@ -30,26 +30,6 @@ export class AuthController {
 
     }
 
-    @UseGuards(MerchantAuthGuard)
-    @Post('/login-merchant')
-    async loginMerchant(@Req() req, @Res({ passthrough: true }) res) {
-        try {
-            const access_token = await this.authService.login(req.user);
-            console.log(req.user);
-            res.cookie('access_token', access_token.access_token, { httpOnly: true });
-            return successResponse(access_token, "Login Successful");
-        } catch (err) {
-            throw new HttpException(
-                errorResponse(
-                    'User login failed',
-                    err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-                ),
-                HttpStatus.BAD_REQUEST,
-            );
-        }
-
-    }
-
     @Get('google')
     @UseGuards(GoogleAuthGuard)
     async googleAuth(@Req() req) {
@@ -66,11 +46,23 @@ export class AuthController {
         };
     }
 
-    @Get('logout')
-    async logout(@Req() req, @Res() res) {
-        res.clearCookie('jwt token', {
+    // @Get('logout')
+    // async logout(@Req() req, @Res() res) {
+    //     res.clearCookie('access_token', {
+    //         httpOnly: true,
+    //     });
+    //     return res.json({ message: 'Successfully logged out' });
+    // }
+
+    @Post('logout')
+    logout(@Res() res) {
+        res.clearCookie('access_token', {
             httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
         });
-        return res.json({ message: 'Successfully logged out' });
+        return successResponse({ message: 'Successfully logged out' });
     }
+
 }
