@@ -23,8 +23,6 @@ export class CreateUserDto {
     @IsString()
     password: string;
 
-    @IsNotEmpty()
     @IsString()
-    tel: string;
-
+    tel?: string;
 }
