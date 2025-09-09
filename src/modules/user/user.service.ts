@@ -26,9 +26,8 @@ export class UserService {
           username: createUserDto.username,
           email: createUserDto.email,
           password: bcryptPassword,
-          firstname: createUserDto.firstname,
-          lastname: createUserDto.lastname,
-          tel: createUserDto.tel
+          firstName: createUserDto.firstname,
+          lastName: createUserDto.lastname,
         }
       })
       console.log(user);
@@ -49,7 +48,7 @@ export class UserService {
   async findByUsername(username: string) {
     return this.prisma.db.user.findUnique({
       where: {
-        user_name: username
+        userName: username
       }
     })
   }

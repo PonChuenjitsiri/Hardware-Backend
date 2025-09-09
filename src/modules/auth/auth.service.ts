@@ -17,7 +17,7 @@ export class AuthService {
         console.log(user);
         if (user && user.password && (await bcrypt.compare(password, user.password))) {
             return {
-                username: user.user_name,
+                username: user.username,
                 id: user.id,
             }
         }
@@ -49,16 +49,16 @@ export class AuthService {
             createUser = await this.prismaService.db.user.create({
                 data: {
                     email,
-                    user_name: name,
-                    first_name: name,
-                    last_name: name,
+                    userName: name,
+                    firstName: name,
+                    lastName: name,
                     googleId,
                     picture_url: picture,
                 },
             })
         }
 
-        const payload = { username: user?.user_name };
+        const payload = { username: user?.username };
 
         return {
             access_token: this.jwtService.sign(payload),
