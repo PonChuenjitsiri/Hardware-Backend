@@ -17,7 +17,7 @@ export class AuthService {
         console.log(user);
         if (user && user.password && (await bcrypt.compare(password, user.password))) {
             return {
-                username: user.username,
+                username: user.userName,
                 id: user.id,
             }
         }
@@ -53,12 +53,12 @@ export class AuthService {
                     firstName: name,
                     lastName: name,
                     googleId,
-                    picture_url: picture,
+                    pictureUrl: picture,
                 },
             })
         }
 
-        const payload = { username: user?.username };
+        const payload = { username: user?.userName };
 
         return {
             access_token: this.jwtService.sign(payload),
